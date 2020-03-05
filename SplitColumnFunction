@@ -1,0 +1,37 @@
+Create function SplitColumns (
+  @ids VARCHAR(MAX)
+)
+
+Returns varchar(50)
+AS
+BEGIN
+	SET @ids =replace(@ids, '', '')
+	IF len(@ids) = 0 
+	Return null
+
+	Declare @start int = 1
+	Declare @end int = charindex(',', @ids)
+	Declare @results varchar(10)
+	
+	--if no comma, just return the one value
+	if @end = 0
+	BEGIN
+		set @results = (@ids)
+		return @results
+		end
+
+	WHILE @end > 0
+	BEGIN 
+		SET @results = SUBSTRING(@ids, @start, @end - @start)
+		SET @start = @end + 1
+		SET @end = CHARINDEX(',', @ids, @start)		
+
+		return @results		
+	END
+
+		return @results
+	--add final row
+		set @results = SUBSTRING(@ids, @start, LEN(@ids) - @start + 1)
+		
+		return @results
+	END
